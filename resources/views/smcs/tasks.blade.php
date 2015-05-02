@@ -2,10 +2,11 @@
 	<table class="table table-condensed">
 	<thead>
 	<tr>
-		<th>@lang('view.tasks.n')</th>
-		<th>@lang('view.tasks.task')</th>
-		<th>@lang('view.tasks.from')</th>
-		<th>@lang('view.tasks.to')</th>
+		<th>@lang('view.tasks.label.n')</th>
+		<th>@lang('view.tasks.label.billing_period')</th>
+		<th>@lang('view.tasks.label.task')</th>
+		<th>@lang('view.tasks.label.from')</th>
+		<th>@lang('view.tasks.label.to')</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -15,6 +16,9 @@
 	<tr>
 		<td>
 			{{ ++$n }}
+		</td>
+		<td>
+			{{ date('d.m.Y', $task['bill_from']) }} &mdash; {{ date('d.m.Y', $task['bill_to']) }}
 		</td>
 		<td>
 			@lang('tasks.type.' . $task['type'])

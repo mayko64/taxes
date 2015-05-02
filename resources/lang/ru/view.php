@@ -19,10 +19,11 @@ return [
 	
 	'index.ok' => 'OK',
 
-	'tasks.n' => '№&nbsp;п/п',
+	'tasks.label.n' => '№&nbsp;п/п',
+	'tasks.label.task' => 'Задача',
+	'tasks.label.from' => 'С',
+	'tasks.label.to' => 'По',
+	'tasks.label.billing_period' => 'Учетный период',
 	'tasks.empty' => 'Актуальные задачи отсутствуют',
-	'tasks.task' => 'Задача',
-	'tasks.from' => 'С',
-	'tasks.to' => 'По',
 	'tasks.cummulative' => 'Накопительным итогом',
 ];

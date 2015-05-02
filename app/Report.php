@@ -27,15 +27,16 @@ class Report {
 		$tasks = new TasksHeap();
 		
 		foreach ($this->findAvailableTasks() as $task) {
+			$periodStartDate = $this->getPeriodStartDate($task);
 			$period = new \DatePeriod(
-				$this->getPeriodStartDate($task),
+				$periodStartDate,
 				$task->getInterval(),
 				$this->to,
 				\DatePeriod::EXCLUDE_START_DATE
 			);
 			
-			foreach ($period as $startNextPeriodDate) {
-				$periodEndDate = clone $startNextPeriodDate;
+			foreach ($period as $nextPeriodStartDate) {
+				$periodEndDate = clone $nextPeriodStartDate;
 				$periodEndDate->modify('-1 day');
 				
 				$payStrategy = PayStrategyFactory::getStrategy($task->pay_strategy);
@@ -55,8 +56,11 @@ class Report {
 						'to'             => $to->getTimestamp(),
 						'type'           => $task->type,
 						'is_cummulative' => $task->is_cummulative,
+						'bill_from'      => $periodStartDate->getTimestamp(),
+						'bill_to'        => $periodEndDate->getTimestamp(),
 					]);
 				}
+				$periodStartDate = $nextPeriodStartDate;
 			}
 		}
 		
