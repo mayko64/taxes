@@ -2,7 +2,6 @@
 
 use App\Http\Requests\TasksPostRequest;
 use App\Task;
-use App\TasksList;
 use App\Report;
 
 class SmcsController extends Controller {
@@ -40,7 +39,7 @@ class SmcsController extends Controller {
 	 */
 	public function tasks(TasksPostRequest $request)
 	{
-		App::setLocale($request->get('language'));
+		\App::setLocale($request->get('language'));
 		
 		$report = new Report();
 		$report->setESVPeriod($request->get('esv_period'));

@@ -24,6 +24,16 @@ class Task extends Model {
 	const STRATEGY_EXTRA_40_DAYS = 'extra_40_days';
 	const STRATEGY_EXTRA_50_DAYS = 'extra_50_days';
 	
+	protected $periodMap = [
+		Task::PERIOD_MONTH   => 'P1M',
+		Task::PERIOD_QUARTER => 'P3M',
+		Task::PERIOD_YEAR    => 'P1Y',
+	];
+	
+	public function getInterval() {
+		return new \DateInterval($this->periodMap[$this->period]);
+	}
+	
 	public static function getTypes() {
 		return [
 			self::TYPE_EN  => trans('tasks.type.en'),

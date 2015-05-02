@@ -18,6 +18,11 @@ return [
 	'index.label.language' => 'Мова',
 	
 	'index.ok' => 'OK',
-	
+
+	'tasks.n' => '№&nbsp;п/п',
 	'tasks.empty' => 'Актуальні задачі відсутні',
+	'tasks.task' => 'Задача',
+	'tasks.from' => 'З',
+	'tasks.to' => 'По',
+	'tasks.cummulative' => 'Накопичувальним ітогом',
 ];

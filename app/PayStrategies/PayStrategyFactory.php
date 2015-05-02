@@ -6,7 +6,7 @@ class PayStrategyFactory {
 	
 	/**
 	 * Fabric method for payment strategy
-	 * 
+	 *
 	 * @param string $strategy
 	 * @throws \InvalidArgumentException
 	 * @return PayStrategy
@@ -16,7 +16,7 @@ class PayStrategyFactory {
 			throw new \InvalidArgumentException('Invalid strategy: ' . $strategy);
 		}
 		
-		$class = camel_case($strategy);
+		$class = __NAMESPACE__ . '\\' . studly_case($strategy);
 		
 		return new $class;
 	}
