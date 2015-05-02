@@ -1,6 +1,8 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Tasks;
+use App\Task;
 
 class TasksPostRequest extends Request {
 
@@ -21,13 +23,17 @@ class TasksPostRequest extends Request {
 	 */
 	public function rules()
 	{
+		$groups = array_keys(Task::getGroups());
+		$esvPeriods = array_keys(Task::getESVPeriods());
+		$supportedLanguages = config('app.locales');
+
 		return [
-			'group' => 'required|in:1,2,3,4,5,6',
+			'group'        => 'required|in:' . join(',', $groups),
 			'current_year' => 'required|date_format:Y',
-			'esv_period' => 'required|in:month,quater',
-			'from' => 'required|date',
-			'to' => 'required|date',
-			'language' => 'required|in:ru,ua'
+			'esv_period'   => 'required|in:' . join(',', $esvPeriods),
+			'from'         => 'required|date',
+			'to'           => 'required|date',
+			'language'     => 'required|in:' . join(',', $supportedLanguages),
 		];
 	}
 

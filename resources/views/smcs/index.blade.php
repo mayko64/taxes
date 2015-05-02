@@ -7,7 +7,7 @@
 
 		<link rel="icon" href="favicon.ico">
 		<link rel="shortcut icon" href="favicon.ico">
-		
+
 		<title>@lang('view.index.task_list')</title>
 
 		@if (App::environment() == 'local')
@@ -27,7 +27,7 @@
 			<link href="/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
 			<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 		@endif
-		
+
 		<script>
 			window.SMCS = window.SMCS || {};
 			window.SMCS.lang = {
@@ -56,12 +56,9 @@
 							<label for="group">@lang('view.index.label.group')</label>
 							<select id="group" name="group" class="form-control">
 								<option value=""></option>
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
+								@foreach ($groups as $group => $title)
+									<option value="{{ $group }}">{{ $title }}</option>
+								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
@@ -77,8 +74,9 @@
 							<label for="esv-period">@lang('view.index.label.esv_period')</label>
 							<select id="esv-period" name="esv_period" class="form-control">
 								<option value=""></option>
-								<option value="month">@lang('view.index.month')</option>
-								<option value="quater">@lang('view.index.quater')</option>
+								@foreach ($esv_periods as $esv_period => $title)
+									<option value="{{ $esv_period }}">{{ $title }}</option>
+								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
@@ -103,8 +101,9 @@
 							<label for="language">@lang('view.index.label.language')</label>
 							<select id="language" name="language" class="form-control">
 								<option value=""></option>
-								<option value="ru">@lang('view.index.ru')</option>
-								<option value="ua">@lang('view.index.ua')</option>
+								@foreach ($locales as $lang)
+								<option value="{{ $lang }}">@lang('view.index.' . $lang)</option>
+								@endforeach
 							</select>
 						</div>
 						<button type="submit" class="btn btn-primary">@lang('view.index.ok')</button>

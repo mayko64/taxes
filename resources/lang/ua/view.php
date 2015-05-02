@@ -18,4 +18,6 @@ return [
 	'index.label.language' => 'Мова',
 	
 	'index.ok' => 'OK',
+	
+	'tasks.empty' => 'Актуальні задачі відсутні',
 ];
