@@ -10,7 +10,8 @@
 	</thead>
 	<tbody>
 @endif
-@forelse ($tasks as $n => $task)
+<?php $n = 0; ?>
+@forelse ($tasks as $task)
 	<tr>
 		<td>
 			{{ ++$n }}

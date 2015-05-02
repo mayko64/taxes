@@ -24,7 +24,7 @@ class Report {
 	public function getTasks() {
 		$this->check();
 		
-		$tasks = [];
+		$tasks = new TasksHeap();
 		
 		foreach ($this->findAvailableTasks() as $task) {
 			$period = new \DatePeriod(
@@ -50,12 +50,12 @@ class Report {
 				if ($to > $this->from && $from < $this->to) {
 					$to = $this->shift($task, $to);
 					
-					$tasks[] = [
+					$tasks->insert([
 						'from'           => $from->getTimestamp(),
 						'to'             => $to->getTimestamp(),
 						'type'           => $task->type,
 						'is_cummulative' => $task->is_cummulative,
-					];
+					]);
 				}
 			}
 		}
@@ -114,6 +114,22 @@ class Report {
 		
 		if (empty($this->to)) {
 			throw new \RuntimeException('DateTo is not set');
+		}
+	}
+}
+
+class TasksHeap extends \SplHeap {
+	
+	protected function compare($task1, $task2) {
+		$from1 = $task1['from'];
+		$from2 = $task2['from'];
+		
+		if ($from1 > $from2) {
+			return -1;
+		} elseif ($from1 < $from2) {
+			return 1;
+		} else {
+			return 0;
 		}
 	}
 }
