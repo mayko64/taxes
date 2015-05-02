@@ -14,6 +14,7 @@
 			<script src="/js/jquery-2.1.3.js"></script>
 			<script src="/js/bootstrap.js"></script>
 			<script src="/js/moment.js"></script>
+			<script src="/js/moment.{{ config('app.locale') }}.js"></script>
 			<script src="/js/bootstrap-datetimepicker.min.js"></script>
 			<link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
 			<link href="/css/bootstrap-theme.css" rel="stylesheet" type="text/css">
@@ -22,6 +23,7 @@
 			<script src="/js/jquery-2.1.3.min.js"></script>
 			<script src="/js/bootstrap.min.js"></script>
 			<script src="/js/moment.min.js"></script>
+			<script src="/js/moment.{{ config('app.locale') }}.js"></script>
 			<script src="/js/bootstrap-datetimepicker.min.js"></script>
 			<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 			<link href="/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
@@ -38,8 +40,9 @@
 				"to"          : "@lang('view.index.label.to')",
 				'language'    : "@lang('view.index.label.language')"
 			};
+			window.SMCS.locale = '{{ config("app.locale") }}';
 		</script>
-		<script src="/js/smcs.js?2"></script>
+		<script src="/js/smcs.js?3"></script>
 	</head>
 	<body>
 		<div class="container">

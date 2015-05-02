@@ -44,12 +44,14 @@
 	$(document).ready(function() {
 		$('.yearpicker').datetimepicker({
 			viewMode: 'years',
-			format: 'YYYY'
+			format: 'YYYY',
+			locale: window.SMCS.locale
 		});
 		
 		$('.datepicker').datetimepicker({
 			viewMode: 'days',
-			format: 'YYYY-MM-DD'
+			format: 'DD.MM.YYYY',
+			locale: window.SMCS.locale
 		});
 	});
 }());
