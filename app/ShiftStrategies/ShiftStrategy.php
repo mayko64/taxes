@@ -16,11 +16,11 @@ abstract class ShiftStrategy {
 		];
 	}
 	
-	protected function isHoliday(\DateTime $date) {
+	public static function isHoliday(\DateTime $date) {
 		return (bool) Holiday::where('date', '=', $date->format('Y-m-d'))->first();
 	}
 	
-	protected function isWeekend(\DateTime $date) {
+	public static function isWeekend(\DateTime $date) {
 		return in_array($date->format('N'), [6, 7]);
 	}
 }

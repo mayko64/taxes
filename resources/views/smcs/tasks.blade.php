@@ -5,7 +5,7 @@
 		<th>@lang('view.tasks.label.n')</th>
 		<th>@lang('view.tasks.label.billing_period')</th>
 		<th>@lang('view.tasks.label.task')</th>
-		<th>@lang('view.tasks.label.from')</th>
+		<th>@lang('view.tasks.label.from') <small class="glyphicon glyphicon-triangle-bottom"></small></th>
 		<th>@lang('view.tasks.label.to')</th>
 	</tr>
 	</thead>

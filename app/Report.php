@@ -2,6 +2,7 @@
 
 use App\PayStrategies\PayStrategyFactory;
 use App\ShiftStrategies\ShiftStrategiesFactory;
+use App\ShiftStrategies\ShiftStrategy;
 
 class Report {
 	
@@ -49,7 +50,13 @@ class Report {
 				$to =   ($payDateTo   < $this->to)   ? $payDateTo   : $this->to;
 
 				if ($to > $this->from && $from < $this->to) {
-					$to = $this->shift($task, $to);
+					if (ShiftStrategy::isHoliday($to) or ShiftStrategy::isWeekend($to)) {
+						$to = ShiftStrategiesFactory::getStrategyByTask($task)->shift($to);
+					}
+					
+					if ($task->is_cummulative) {
+						$periodStartDate = new \DateTime($periodStartDate->format('Y-01-01'));
+					}
 					
 					$tasks->insert([
 						'from'           => $from->getTimestamp(),
@@ -65,11 +72,6 @@ class Report {
 		}
 		
 		return $tasks;
-	}
-	
-	protected function shift(Task $task, \DateTime $date) {
-		$shiftStrategy = ShiftStrategiesFactory::getStrategyByTask($task);
-		return $shiftStrategy->shift($date);
 	}
 	
 	protected function getPeriodStartDate(Task $task) {
