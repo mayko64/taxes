@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://smcs.localhost',
+	'url' => 'http://localhost',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ return [
 	|
 	*/
 
-	'key' => env('APP_KEY', 'c71bfc607554726e6e4f8e658c340772'),
+	'key' => env('APP_KEY', ''),
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
