@@ -1,5 +1,8 @@
 <?php namespace App\PayStrategies;
 
+/**
+ * Внести оплату не позднее 20 числа месяца, за который производится оплата.
+ */
 class Before20 extends PayStrategy {
 
 	public function getPayFrom() {

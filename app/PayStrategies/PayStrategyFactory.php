@@ -5,8 +5,6 @@ use App\Task;
 class PayStrategyFactory {
 	
 	/**
-	 * Fabric method for payment strategy
-	 *
 	 * @param string $strategy
 	 * @throws \InvalidArgumentException
 	 * @return PayStrategy
@@ -20,5 +18,4 @@ class PayStrategyFactory {
 		
 		return new $class;
 	}
-	
 }

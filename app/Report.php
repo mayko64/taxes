@@ -6,17 +6,29 @@ use App\ShiftStrategies\ShiftStrategy;
 
 class Report {
 	
+	/**
+	 * Группа налогоплательщика
+	 *
+	 * @var int (1-6)
+	 */
 	protected $group;
 
+	/**
+	 * Периодичность оплаты ЕСВ
+	 *
+	 * @var string (month|quarter)
+	 */
 	protected $esvPeriod;
 	
 	/**
+	 * Начальная дата периода
 	 *
 	 * @var \DateTime
 	 */
 	protected $from;
 	
 	/**
+	 * Конечная дата периода
 	 *
 	 * @var \DateTime
 	 */
@@ -28,34 +40,48 @@ class Report {
 		$tasks = new TasksHeap();
 		
 		foreach ($this->findAvailableTasks() as $task) {
-			$periodStartDate = $this->getPeriodStartDate($task);
+			// Точкой отсчета возьмем начало предыдущего года,
+			// чтобы охватить все события, по которым могут быть актуальные задачи
+			$billFrom = new \DateTime($this->from->format('Y-01-01'));
+			$billFrom->sub(new \DateInterval('P1Y'));
+			
+			// Разобьем промежуток времени между начальной точкой и крайней датой,
+			// указанной пользователем, на периоды длиной $task->period каждый
 			$period = new \DatePeriod(
-				$periodStartDate,
+				$billFrom,
 				$task->getInterval(),
 				$this->to,
 				\DatePeriod::EXCLUDE_START_DATE
 			);
 			
-			foreach ($period as $nextPeriodStartDate) {
-				$periodEndDate = clone $nextPeriodStartDate;
-				$periodEndDate->modify('-1 day');
+			foreach ($period as $nextBillFrom) {
+				// Уточняем границу периода
+				$billTo = clone $nextBillFrom;
+				$billTo->sub(new \DateInterval('P1D'));
 				
+				// Определяем правила оплаты/подачи отчетности
 				$payStrategy = PayStrategyFactory::getStrategy($task->pay_strategy);
-				$payStrategy->setDate($periodEndDate);
+				$payStrategy->setDate($billTo);
 				
 				$payDateFrom = $payStrategy->getPayFrom();
 				$payDateTo = $payStrategy->getPayTo();
 				
+				// Уточняем даты "с"/"по", чтобы не выходить за рамки указанного периода
 				$from = ($payDateFrom > $this->from) ? $payDateFrom : $this->from;
 				$to =   ($payDateTo   < $this->to)   ? $payDateTo   : $this->to;
 
 				if ($to > $this->from && $from < $this->to) {
+					// Если крайний день периода попадает на выходной или праздник,
+					// переносим его в соответствии с задачей либо на предыдущий, либо
+					// на следующий рабочий день
 					if (ShiftStrategy::isHoliday($to) or ShiftStrategy::isWeekend($to)) {
 						$to = ShiftStrategiesFactory::getStrategyByTask($task)->shift($to);
 					}
 					
+					// Корректируем дату начала отчетного периода для задач,
+					// которые выполняются накопительным итогом
 					if ($task->is_cummulative) {
-						$periodStartDate = new \DateTime($periodStartDate->format('Y-01-01'));
+						$billFrom = new \DateTime($billFrom->format('Y-01-01'));
 					}
 					
 					$tasks->insert([
@@ -63,23 +89,20 @@ class Report {
 						'to'             => $to->getTimestamp(),
 						'type'           => $task->type,
 						'is_cummulative' => $task->is_cummulative,
-						'bill_from'      => $periodStartDate->getTimestamp(),
-						'bill_to'        => $periodEndDate->getTimestamp(),
+						'bill_from'      => $billFrom->getTimestamp(),
+						'bill_to'        => $billTo->getTimestamp(),
 					]);
 				}
-				$periodStartDate = $nextPeriodStartDate;
+				$billFrom = $nextBillFrom;
 			}
 		}
 		
 		return $tasks;
 	}
 	
-	protected function getPeriodStartDate(Task $task) {
-		$date = clone $this->from;
-		$date = new \DateTime($date->format('Y-01-01'));
-		return $date;
-	}
-	
+	/**
+	 * Возвращает список шаблонов задач, которые удовлетворяют заданным критериям
+	 */
 	protected function findAvailableTasks() {
 		return Task::whereRaw('"group" = :group AND ("type" <> :type OR "period" = :period)', [
 				'group'  => $this->group,

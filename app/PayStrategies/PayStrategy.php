@@ -3,8 +3,8 @@
 abstract class PayStrategy {
 	
 	/**
-	 * End date of billing period
-	 * 
+	 * Крайняя дата учетного периода
+	 *
 	 * @var \DateTime
 	 */
 	protected $date;

@@ -1,5 +1,8 @@
 <?php namespace App\PayStrategies;
 
+/**
+ * Внести оплату не позднее, чем через 20 дней после окончания месяца/квартала.
+ */
 class Extra20Days extends PayStrategy {
 
 	public function getPayFrom() {

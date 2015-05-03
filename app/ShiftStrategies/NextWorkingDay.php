@@ -1,5 +1,9 @@
 <?php namespace App\ShiftStrategies;
 
+/**
+ * Если крайняя дата подачи отчета выпадает на праздничный/выходной день,
+ * то крайняя дата переносится на следующий рабочий день.
+ */
 class NextWorkingDay extends ShiftStrategy {
 
 	public function shift(\DateTime $date) {

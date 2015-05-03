@@ -1,5 +1,9 @@
 <?php namespace App\ShiftStrategies;
 
+/**
+ * Если крайняя дата оплаты ЕН/ЕСВ выпадает на праздничный/выходной день,
+ * то крайняя дата переносится на последний предшествующий рабочий день.
+ */
 class LastWorkingDay extends ShiftStrategy {
 
 	public function shift(\DateTime $date) {
